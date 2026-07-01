@@ -1,0 +1,84 @@
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+yarn.lock
+package-lock.json
+.pnpm-debug.log
+
+# Expo
+.expo/
+.expo-shared/
+.expo-files/
+dist/
+web-build/
+.expo-shared/
+.expo-files/
+
+# React Native
+.DS_Store
+*.log
+*.tmp
+*.temp
+*.swp
+*.swo
+*.pem
+*.profiler
+*.heapsnapshot
+*.expo/
+web-build/
+.expo/
+.expo-shared/
+.expo-files/
+dist/
+build/
+
+# Android
+android/app/build/
+android/app/src/debug/
+android/app/src/release/
+android/.gradle/
+android/local.properties
+android/*.iml
+android/.project
+android/.settings/
+android/.classpath
+android/gen/
+android/bin/
+android/libs/
+android/obj/
+
+# iOS
+ios/build/
+ios/Pods/
+ios/*.xcodeproj/project.xcworkspace/xcuserdata/
+ios/*.xcodeproj/xcuserdata/
+ios/*.xcworkspace/xcuserdata/
+ios/*.xcodeproj/project.xcworkspace/contents.xcworkspacedata
+
+# Environment
+.env
+.env.local
+.env.development
+.env.production
+
+# IDE
+.vscode/
+.idea/
+*.iml
+*.iws
+*.ipr
+*.swp
+*.swo
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Misc
+*.log
+*.tmp
+*.temp
+*.pid
+*.seed
+*.pid.lock
