@@ -65,15 +65,15 @@ src/
 
 ## 🛠️ Scripts úteis
 
-| Comando | Descrição |
-|---------|-----------|
-| `npm start` | Inicia o Metro Bundler |
-| `npm run android` | Roda no Android |
-| `npm run ios` | Roda no iOS (Mac) |
-| `npm run lint` | Verifica o código com ESLint |
-| `npm run format` | Formata o código com Prettier |
-| `npm run clean` | Limpa o build do Android |
-| `npm run create NomeDoComponente` | Gera um novo componente |
+| Comando                           | Descrição                     |
+| --------------------------------- | ----------------------------- |
+| `npm start`                       | Inicia o Metro Bundler        |
+| `npm run android`                 | Roda no Android               |
+| `npm run ios`                     | Roda no iOS (Mac)             |
+| `npm run lint`                    | Verifica o código com ESLint  |
+| `npm run format`                  | Formata o código com Prettier |
+| `npm run clean`                   | Limpa o build do Android      |
+| `npm run create NomeDoComponente` | Gera um novo componente       |
 
 ---
 
@@ -115,17 +115,3 @@ src/components/MeuComponente/
 ```
 
 ---
-
-## 📋 Gerenciadores de pacote
-
-| Gerenciador | Comando | Vantagem |
-|-------------|---------|----------|
-| **npm** | `npm install` | Padrão, mais conhecido |
-| **pnpm** | `pnpm install` | Mais rápido, economiza espaço |
-| **yarn** | `yarn install` | Estável, amplamente usado |
-
-> **Recomendação:** Use **pnpm** para projetos novos — é mais rápido e economiza espaço em disco.
-
----
-
-Feito com ❤️
