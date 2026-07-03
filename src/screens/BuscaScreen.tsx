@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -7,59 +7,68 @@ import {
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
-} from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useTheme } from '../context/ThemeContext';
-import { SPACING, TYPOGRAPHY, RADIUS, SHADOWS } from '../styles/globalStyles';
-import { SearchResult } from '../types/common';
-import { searchItems } from '../services/searchService';
+} from "react-native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useTheme } from "../context/ThemeContext";
+import { SPACING, TYPOGRAPHY, RADIUS, SHADOWS } from "../styles/globalStyles";
+import { SearchResult } from "../types/common";
+import { searchItems } from "../services/searchService";
 
 const BuscaScreen: React.FC = () => {
   const { colors } = useTheme();
-  const [searchText, setSearchText] = useState<string>('');
+  const [searchText, setSearchText] = useState<string>("");
+  const [allData, setAllData] = useState<SearchResult[]>([]);
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [initialLoad, setInitialLoad] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(true);
 
+  // Carrega TODOS os dados uma única vez
   useEffect(() => {
-    loadInitialData();
+    loadAllData();
   }, []);
 
+  // Filtra localmente conforme o usuário digita
   useEffect(() => {
-    const delaySearch = setTimeout(() => {
-      performSearch(searchText);
-    }, 300); // Debounce de 300ms
+    filterResults(searchText);
+  }, [searchText, allData]);
 
-    return () => clearTimeout(delaySearch);
-  }, [searchText]);
-
-  const loadInitialData = async () => {
-    try {
-      setInitialLoad(true);
-      const results = await searchItems('');
-      setSearchResults(results);
-    } catch (error) {
-      console.error('Erro ao carregar dados:', error);
-    } finally {
-      setInitialLoad(false);
-    }
-  };
-
-  const performSearch = async (query: string) => {
+  const loadAllData = async () => {
     try {
       setLoading(true);
-      const results = await searchItems(query);
+      const results = await searchItems();
+      setAllData(results);
       setSearchResults(results);
     } catch (error) {
-      console.error('Erro ao buscar:', error);
+      console.error("Erro ao carregar dados:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  if (initialLoad) {
+  const filterResults = (query: string) => {
+    if (!query || query.trim() === "") {
+      setSearchResults(allData);
+      return;
+    }
+
+    const lowerQuery = query.toLowerCase();
+    const filtered = allData.filter(
+      (item) =>
+        item.title.toLowerCase().includes(lowerQuery) ||
+        item.subtitle.toLowerCase().includes(lowerQuery) ||
+        (item.tags &&
+          item.tags.some((tag) => tag.toLowerCase().includes(lowerQuery))),
+    );
+    setSearchResults(filtered);
+  };
+
+  if (loading) {
     return (
-      <View style={[styles.loadingContainer, { backgroundColor: colors.background }]}>
+      <View
+        style={[
+          styles.loadingContainer,
+          { backgroundColor: colors.background },
+        ]}
+      >
         <ActivityIndicator size="large" color={colors.primary} />
         <Text style={[styles.loadingText, { color: colors.textSecondary }]}>
           Carregando...
@@ -85,9 +94,8 @@ const BuscaScreen: React.FC = () => {
           value={searchText}
           onChangeText={setSearchText}
         />
-        {loading && <ActivityIndicator size="small" color={colors.primary} />}
-        {searchText.length > 0 && !loading && (
-          <TouchableOpacity onPress={() => setSearchText('')}>
+        {searchText.length > 0 && (
+          <TouchableOpacity onPress={() => setSearchText("")}>
             <MaterialCommunityIcons
               name="close-circle"
               size={20}
@@ -148,8 +156,8 @@ const styles = StyleSheet.create({
   },
   loadingContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   loadingText: {
     marginTop: SPACING.medium,

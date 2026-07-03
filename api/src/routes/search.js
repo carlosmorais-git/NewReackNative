@@ -1,99 +1,21 @@
 // Rotas de Busca/Pesquisa
 const express = require("express");
 const router = express.Router();
+const db = require("../db");
 
-// Mock data - Itens pesquisáveis
-const searchData = [
-  {
-    id: 1,
-    title: "React Native",
-    subtitle: "Framework mobile multiplataforma",
-    category: "tecnologia",
-    tags: ["mobile", "javascript", "react"],
-  },
-  {
-    id: 2,
-    title: "TypeScript",
-    subtitle: "JavaScript tipado para maior segurança",
-    category: "tecnologia",
-    tags: ["typescript", "javascript", "tipos"],
-  },
-  {
-    id: 3,
-    title: "Expo",
-    subtitle: "Plataforma para React Native",
-    category: "tecnologia",
-    tags: ["expo", "mobile", "react-native"],
-  },
-  {
-    id: 4,
-    title: "Node.js",
-    subtitle: "Runtime JavaScript no servidor",
-    category: "backend",
-    tags: ["nodejs", "javascript", "backend"],
-  },
-  {
-    id: 5,
-    title: "Express",
-    subtitle: "Framework web para Node.js",
-    category: "backend",
-    tags: ["express", "nodejs", "api"],
-  },
-  {
-    id: 6,
-    title: "PostgreSQL",
-    subtitle: "Banco de dados relacional",
-    category: "database",
-    tags: ["postgresql", "sql", "database"],
-  },
-  {
-    id: 7,
-    title: "Git",
-    subtitle: "Controle de versão distribuído",
-    category: "ferramentas",
-    tags: ["git", "versionamento", "github"],
-  },
-  {
-    id: 8,
-    title: "VS Code",
-    subtitle: "Editor de código da Microsoft",
-    category: "ferramentas",
-    tags: ["vscode", "editor", "ide"],
-  },
-];
-
-// GET - Buscar/pesquisar itens
-router.get("/", (req, res) => {
+// GET - Buscar todos os frameworks (filtro feito no frontend)
+router.get("/", async (req, res) => {
   try {
-    const { q, category } = req.query;
-    let results = [...searchData];
-
-    // Filtrar por query string
-    if (q && q.trim() !== "") {
-      const query = q.toLowerCase();
-      results = results.filter(
-        (item) =>
-          item.title.toLowerCase().includes(query) ||
-          item.subtitle.toLowerCase().includes(query) ||
-          item.tags.some((tag) => tag.toLowerCase().includes(query)),
-      );
-    }
-
-    // Filtrar por categoria
-    if (category) {
-      results = results.filter((item) => item.category === category);
-    }
+    const result = await db.query("SELECT * FROM frameworks ORDER BY id");
 
     res.json({
       status: "success",
       message:
-        results.length > 0
+        result.rows.length > 0
           ? "Resultados encontrados"
           : "Nenhum resultado encontrado",
-      data: results,
-      total: results.length,
-      query: q || "",
-      category: category || "all",
+      data: result.rows,
+      total: result.rows.length,
     });
   } catch (error) {
     console.error("Erro ao buscar:", error);
@@ -107,9 +29,14 @@ router.get("/", (req, res) => {
 });
 
 // GET - Buscar categorias disponíveis
-router.get("/categories", (req, res) => {
+router.get("/categories", async (req, res) => {
   try {
-    const categories = [...new Set(searchData.map((item) => item.category))];
+    const result = await db.query(
+      "SELECT DISTINCT category FROM frameworks ORDER BY category",
+    );
+
+    const categories = result.rows.map((row) => row.category);
+
     res.json({
       status: "success",
       data: categories,

@@ -6,6 +6,7 @@ export interface Feature {
   icon: string;
   title: string;
   description: string;
+  descricao?: string; // Compatibilidade com banco de dados
   color: string;
   active: boolean;
 }

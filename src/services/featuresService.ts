@@ -15,7 +15,11 @@ export const getFeatures = async (): Promise<Feature[]> => {
     const data: ApiResponse<Feature[]> = await response.json();
 
     if (data.status === "success") {
-      return data.data;
+      // Mapeia 'descricao' para 'description' se necessário
+      return data.data.map((feature) => ({
+        ...feature,
+        description: feature.description || feature.descricao || "",
+      }));
     }
 
     return [];

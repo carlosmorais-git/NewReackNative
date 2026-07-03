@@ -14,9 +14,9 @@ require("dotenv").config();
  */
 const express = require("express");
 const cors = require("cors");
+
 const usersRouter = require("./routes/users");
 const featuresRouter = require("./routes/features");
-const contactsRouter = require("./routes/contacts");
 const searchRouter = require("./routes/search");
 
 // Criando uma instância do aplicativo Express
@@ -33,20 +33,11 @@ app.use(express.json());
 // Rota principal da API, que retorna uma mensagem de funcionamento
 app.get("/", (req, res) => {
   res.json({
+    status: "success",
+    code: 200,
     mensagem: "API funcionando!",
+    bancoDeDados: process.env.DB_NAME,
   });
-});
-
-app.get("/contas", async (req, res) => {
-  try {
-    const result = await db.query("SELECT * FROM contas");
-    res.json({
-      status: "sucesso",
-      contas: result.rows,
-    });
-  } catch (error) {
-    res.status(500).json({ error: "Erro interno do servidor" });
-  }
 });
 
 // Rotas de usuários
@@ -54,9 +45,6 @@ app.use("/usuarios", usersRouter);
 
 // Rotas de features (Home)
 app.use("/api/features", featuresRouter);
-
-// Rotas de contatos
-app.use("/api/contacts", contactsRouter);
 
 // Rotas de busca
 app.use("/api/search", searchRouter);

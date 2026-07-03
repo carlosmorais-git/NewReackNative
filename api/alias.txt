@@ -1,0 +1,9 @@
+# Abrir o perfil
+notepad $PROFILE
+
+# Adicionar estas linhas:
+Set-Alias psql "C:\Program Files\PostgreSQL\18\bin\psql.exe"
+$env:PGPASSWORD = "4580"
+
+# Salvar e recarregar
+. $PROFILE
