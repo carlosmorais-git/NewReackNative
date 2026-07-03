@@ -11,7 +11,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#6C63FF"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.seuapp.meuapp"
@@ -29,7 +31,19 @@
     "experiments": {
       "tsconfigPaths": true
     },
-    "plugins": ["expo-router"],
-    "platforms": ["ios", "android", "web"]
+    "plugins": [
+      "expo-router"
+    ],
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "23c9e2bf-42b7-454b-8632-58922224032b"
+      }
+    }
   }
 }
