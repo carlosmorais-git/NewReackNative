@@ -48,7 +48,6 @@ app.use("/api/features", featuresRouter);
 
 // Rotas de busca
 app.use("/api/search", searchRouter);
-
 /**
  * Definindo a porta do servidor,
  * que pode ser configurada através de uma variável de ambiente

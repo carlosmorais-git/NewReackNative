@@ -52,6 +52,32 @@ export interface ApiResponse<T> {
   total?: number;
 }
 
+// Usuário (autenticação)
+export interface Usuario {
+  id: number;
+  nome: string;
+  email: string;
+  phone?: string;
+  website?: string;
+  linkedin?: string;
+  address?: string;
+  criado_em?: string;
+  tipo_usuario?: string;
+}
+
+export interface LoginResponse {
+  status: "sucesso" | "erro";
+  mensagem: string;
+  token: string;
+  usuario: Usuario;
+}
+
+export interface UsuarioLogadoResponse {
+  status: "sucesso" | "erro";
+  mensagem: string;
+  usuario: Usuario;
+}
+
 // Legacy types (manter para compatibilidade)
 export interface ModuloData {
   id: number;

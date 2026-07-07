@@ -1,5 +1,6 @@
 -- Populando usuários para testes rode o comando:
--- $env:PGPASSWORD = "4580"; & "C:\Program Files\PostgreSQL\18\bin\psql.exe" -U postgres -d base_native -f database/seed.sql
+-- $env:PGPASSWORD = "4580"; $env:PGCLIENTENCODING = "UTF8"; & "C:\Program Files\PostgreSQL\18\bin\psql.exe" -U postgres -d base_native -f database/seed.sql
+-- (PGCLIENTENCODING=UTF8 evita que acentos sejam corrompidos pelo codepage do terminal do Windows)
 
 INSERT INTO usuarios (
     nome,
@@ -14,7 +15,8 @@ VALUES
 (
     'Carlos',
     'carlos@email.com',
-    '123456',
+    -- senha: 123456 (hash bcrypt)
+    '$2b$10$vO1SvZ9Us7k/eiad6uBOIuq7uLXKvWKDYqv5RoaCGj1/N0pnRiONe',
     '(32) 99999-9999',
     'https://carlos.dev',
     'https://linkedin.com/in/carlos',
@@ -23,16 +25,25 @@ VALUES
 (
     'Maria',
     'maria@email.com',
-    '654321',
+    -- senha: 654321 (hash bcrypt)
+    '$2b$10$UKg8ATiob628XaMeCfbAoOaldrs7UEzahtEePuIy0Qir8mnxqUTf2',
     '(32) 98888-8888',
     'https://maria.dev',
     'https://linkedin.com/in/maria',
     'Rua B, 200 - Muriaé/MG'
 )
--- em caso de conflito de email, não insere o registro duplicado
-ON CONFLICT (email) DO NOTHING;
+-- em caso de conflito de email, atualiza os dados (corrige encoding antigo, se houver)
+ON CONFLICT (email) DO UPDATE SET
+    nome = excluded.nome,
+    senha = excluded.senha,
+    phone = excluded.phone,
+    website = excluded.website,
+    linkedin = excluded.linkedin,
+    address = excluded.address;
 
 -- Populando Features para a tela Home
+-- (limpa antes de inserir para o seed poder ser reaplicado sem duplicar linhas)
+TRUNCATE TABLE features RESTART IDENTITY;
 
 INSERT INTO features (
     descricao,
@@ -86,6 +97,8 @@ VALUES
 );
 
 -- Populando Frameworks para a tela de Busca
+-- (limpa antes de inserir para o seed poder ser reaplicado sem duplicar linhas)
+TRUNCATE TABLE frameworks RESTART IDENTITY;
 
 INSERT INTO frameworks (
     title,

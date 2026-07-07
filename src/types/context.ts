@@ -1,5 +1,18 @@
 import { ReactNode } from "react";
 import { ColorScheme } from "./common";
+import { Usuario } from "./api";
+
+// Auth Context
+export interface AuthContextValue {
+  user: Usuario | null;
+  loading: boolean;
+  signIn: (email: string, senha: string) => Promise<void>;
+  signOut: () => Promise<void>;
+}
+
+export interface AuthProviderProps {
+  children: ReactNode;
+}
 
 // Theme Context
 export interface ThemeContextValue {

@@ -8,12 +8,27 @@ import {
   Switch,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useTheme } from "../context/ThemeContext";
-import { SPACING, TYPOGRAPHY, RADIUS, SHADOWS } from "../styles/globalStyles";
-import { MenuSection } from "../types/common";
+import { useTheme } from "../../context/ThemeContext";
+import { useAuth } from "../../context/AuthContext";
+import {
+  SPACING,
+  TYPOGRAPHY,
+  RADIUS,
+  SHADOWS,
+} from "../../styles/globalStyles";
+import { MenuSection } from "../../types/common";
 
 const MenuScreen: React.FC = () => {
   const { colors, isDark, toggleTheme } = useTheme();
+  const { user, signOut } = useAuth();
+
+  const iniciais = (user?.nome || "?")
+    .trim()
+    .split(/\s+/)
+    .map((parte) => parte[0])
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
 
   const menuSections: MenuSection[] = [
     {
@@ -87,6 +102,39 @@ const MenuScreen: React.FC = () => {
     <ScrollView
       style={[styles.container, { backgroundColor: colors.background }]}
     >
+      <View style={[styles.profileCard, { backgroundColor: colors.surface }]}>
+        <View style={[styles.avatar, { backgroundColor: colors.primary }]}>
+          <Text style={[styles.avatarText, { color: colors.textInverse }]}>
+            {iniciais}
+          </Text>
+        </View>
+        <View style={styles.profileInfo}>
+          <Text style={[styles.profileName, { color: colors.text }]}>
+            {user?.nome}
+          </Text>
+          <Text
+            style={[styles.profileEmail, { color: colors.textSecondary }]}
+            numberOfLines={1}
+          >
+            {user?.email}
+          </Text>
+          {!!user?.tipo_usuario && (
+            <View
+              style={[
+                styles.profileBadge,
+                { backgroundColor: colors.primary + "15" },
+              ]}
+            >
+              <Text
+                style={[styles.profileBadgeText, { color: colors.primary }]}
+              >
+                {user.tipo_usuario}
+              </Text>
+            </View>
+          )}
+        </View>
+      </View>
+
       {menuSections.map((section, sectionIndex) => (
         <View key={sectionIndex} style={styles.section}>
           <Text style={[styles.sectionTitle, { color: colors.textMuted }]}>
@@ -158,6 +206,7 @@ const MenuScreen: React.FC = () => {
 
       <TouchableOpacity
         style={[styles.logoutButton, { backgroundColor: colors.danger + "15" }]}
+        onPress={signOut}
       >
         <MaterialCommunityIcons name="logout" size={24} color={colors.danger} />
         <Text style={[styles.logoutText, { color: colors.danger }]}>Sair</Text>
@@ -170,6 +219,50 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingVertical: SPACING.large,
+  },
+  profileCard: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginHorizontal: SPACING.medium,
+    marginBottom: SPACING.large,
+    padding: SPACING.medium,
+    borderRadius: RADIUS.large,
+    ...SHADOWS.small,
+  },
+  avatar: {
+    width: 56,
+    height: 56,
+    borderRadius: RADIUS.round,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  avatarText: {
+    ...TYPOGRAPHY.h4,
+    fontWeight: "bold",
+  },
+  profileInfo: {
+    flex: 1,
+    marginLeft: SPACING.medium,
+  },
+  profileName: {
+    ...TYPOGRAPHY.body,
+    fontWeight: "700",
+  },
+  profileEmail: {
+    ...TYPOGRAPHY.small,
+    marginTop: SPACING.xs / 2,
+  },
+  profileBadge: {
+    alignSelf: "flex-start",
+    paddingHorizontal: SPACING.small,
+    paddingVertical: 2,
+    borderRadius: RADIUS.small,
+    marginTop: SPACING.xs,
+  },
+  profileBadgeText: {
+    ...TYPOGRAPHY.caption,
+    fontWeight: "700",
+    textTransform: "uppercase",
   },
   section: {
     marginBottom: SPACING.large,

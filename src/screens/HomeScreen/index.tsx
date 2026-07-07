@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,12 +6,17 @@ import {
   ScrollView,
   ActivityIndicator,
   RefreshControl,
-} from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useTheme } from '../context/ThemeContext';
-import { SPACING, TYPOGRAPHY, RADIUS, SHADOWS } from '../styles/globalStyles';
-import { Feature } from '../types/common';
-import { getFeatures } from '../services/featuresService';
+} from "react-native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useTheme } from "../../context/ThemeContext";
+import {
+  SPACING,
+  TYPOGRAPHY,
+  RADIUS,
+  SHADOWS,
+} from "../../styles/globalStyles";
+import { Feature } from "../../types/common";
+import { getFeatures } from "../../services/featuresService";
 
 const HomeScreen: React.FC = () => {
   const { colors } = useTheme();
@@ -25,7 +30,7 @@ const HomeScreen: React.FC = () => {
       const data = await getFeatures();
       setFeatures(data);
     } catch (error) {
-      console.error('Erro ao carregar features:', error);
+      console.error("Erro ao carregar features:", error);
     } finally {
       setLoading(false);
     }
@@ -43,7 +48,12 @@ const HomeScreen: React.FC = () => {
 
   if (loading) {
     return (
-      <View style={[styles.loadingContainer, { backgroundColor: colors.background }]}>
+      <View
+        style={[
+          styles.loadingContainer,
+          { backgroundColor: colors.background },
+        ]}
+      >
         <ActivityIndicator size="large" color={colors.primary} />
         <Text style={[styles.loadingText, { color: colors.textSecondary }]}>
           Carregando...
@@ -137,8 +147,8 @@ const styles = StyleSheet.create({
   },
   loadingContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   loadingText: {
     marginTop: SPACING.medium,
@@ -198,25 +208,13 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   emptyState: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     paddingVertical: SPACING.xxxlarge,
   },
   emptyText: {
     ...TYPOGRAPHY.body,
     marginTop: SPACING.medium,
-  },
-});
-
-export default HomeScreen;
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    marginHorizontal: SPACING.large,
-    marginTop: SPACING.medium,
-    padding: SPACING.medium,
-    borderRadius: RADIUS.large,
-    ...SHADOWS.medium,
   },
   modalButtonText: {
     ...TYPOGRAPHY.button,

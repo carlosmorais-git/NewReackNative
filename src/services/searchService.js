@@ -5,7 +5,7 @@ import { SearchItem, ApiResponse } from "../types/api";
  * Service para buscar TODOS os frameworks da API
  * O filtro é feito no frontend
  */
-export const searchItems = async (): Promise<SearchItem[]> => {
+export const searchItems = async () => {
   try {
     const response = await fetch(`${API_BASE_URL}/api/search`);
 
@@ -13,7 +13,7 @@ export const searchItems = async (): Promise<SearchItem[]> => {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const result: ApiResponse<SearchItem[]> = await response.json();
+    const result = await response.json();
 
     if (result.status === "success") {
       return result.data;
@@ -53,7 +53,7 @@ export const searchItems = async (): Promise<SearchItem[]> => {
 /**
  * Service para buscar categorias disponíveis
  */
-export const getCategories = async (): Promise<string[]> => {
+export const getCategories = async () => {
   try {
     const response = await fetch(`${API_BASE_URL}/api/search/categories`);
 
@@ -61,7 +61,7 @@ export const getCategories = async (): Promise<string[]> => {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const result: ApiResponse<string[]> = await response.json();
+    const result = await response.json();
 
     if (result.status === "success") {
       return result.data;

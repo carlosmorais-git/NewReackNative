@@ -1,10 +1,9 @@
-import { API_BASE_URL } from "./apiConfig";
-import { Feature, ApiResponse } from "../types/api";
+import { API_BASE_URL } from "../apiApp/apiConfig";
 
 /**
  * Service para buscar features da API
  */
-export const getFeatures = async (): Promise<Feature[]> => {
+export const getFeatures = async () => {
   try {
     const response = await fetch(`${API_BASE_URL}/api/features`);
 
@@ -12,7 +11,7 @@ export const getFeatures = async (): Promise<Feature[]> => {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const data: ApiResponse<Feature[]> = await response.json();
+    const data = await response.json();
 
     if (data.status === "success") {
       // Mapeia 'descricao' para 'description' se necessário

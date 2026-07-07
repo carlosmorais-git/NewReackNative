@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,24 +6,81 @@ import {
   TextInput,
   ScrollView,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useTheme } from "../context/ThemeContext";
-import { SPACING, TYPOGRAPHY, RADIUS, SHADOWS } from "../styles/globalStyles";
+import { useTheme } from "../../context/ThemeContext";
+import {
+  SPACING,
+  TYPOGRAPHY,
+  RADIUS,
+  SHADOWS,
+} from "../../styles/globalStyles";
+import { SearchResult } from "../../types/common";
+import { searchItems } from "../../services/searchService";
 
-const BuscaScreen = () => {
+const BuscaScreen: React.FC = () => {
   const { colors } = useTheme();
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState<string>("");
+  const [allData, setAllData] = useState<SearchResult[]>([]);
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  const searchResults = [
-    { id: 1, title: "React Native", subtitle: "Framework mobile" },
-    { id: 2, title: "JavaScript", subtitle: "Linguagem de programação" },
-    { id: 3, title: "TypeScript", subtitle: "JavaScript tipado" },
-  ].filter(
-    (item) =>
-      item.title.toLowerCase().includes(searchText.toLowerCase()) ||
-      item.subtitle.toLowerCase().includes(searchText.toLowerCase()),
-  );
+  // Carrega TODOS os dados uma única vez
+  useEffect(() => {
+    loadAllData();
+  }, []);
+
+  // Filtra localmente conforme o usuário digita
+  useEffect(() => {
+    filterResults(searchText);
+  }, [searchText, allData]);
+
+  const loadAllData = async () => {
+    try {
+      setLoading(true);
+      const results = await searchItems();
+      setAllData(results);
+      setSearchResults(results);
+    } catch (error) {
+      console.error("Erro ao carregar dados:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filterResults = (query: string) => {
+    if (!query || query.trim() === "") {
+      setSearchResults(allData);
+      return;
+    }
+
+    const lowerQuery = query.toLowerCase();
+    const filtered = allData.filter(
+      (item) =>
+        item.title.toLowerCase().includes(lowerQuery) ||
+        item.subtitle.toLowerCase().includes(lowerQuery) ||
+        (item.tags &&
+          item.tags.some((tag) => tag.toLowerCase().includes(lowerQuery))),
+    );
+    setSearchResults(filtered);
+  };
+
+  if (loading) {
+    return (
+      <View
+        style={[
+          styles.loadingContainer,
+          { backgroundColor: colors.background },
+        ]}
+      >
+        <ActivityIndicator size="large" color={colors.primary} />
+        <Text style={[styles.loadingText, { color: colors.textSecondary }]}>
+          Carregando...
+        </Text>
+      </View>
+    );
+  }
 
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
@@ -101,6 +158,15 @@ const BuscaScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  loadingText: {
+    marginTop: SPACING.medium,
+    ...TYPOGRAPHY.body,
   },
   searchContainer: {
     flexDirection: "row",

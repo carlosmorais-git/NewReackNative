@@ -5,8 +5,8 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from "react-native";
-import { COLORS, SPACING, TYPOGRAPHY } from "../styles/globalStyles";
-import { ButtonProps } from "../types/components";
+import { COLORS, SPACING, TYPOGRAPHY } from "../../styles/globalStyles";
+import { ButtonProps } from "../../types/components";
 
 /**
  * Componente de botão reutilizável

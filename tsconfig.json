@@ -2,7 +2,9 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "commonjs",
-    "lib": ["es2017"],
+    "lib": [
+      "es2017"
+    ],
     "allowJs": true,
     "jsx": "react-native",
     "noEmit": true,
@@ -16,6 +18,16 @@
     "ignoreDeprecations": "6.0"
   },
   "extends": "expo/tsconfig.base",
-  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"],
-  "exclude": ["node_modules"]
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "src/apiApp/LotofacilService.js",
+    "src/apiApp/apiConfig.js",
+    "src/services/searchService.js",
+    "src/services/featuresService.js",
+    "src/services/contactsService.js"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

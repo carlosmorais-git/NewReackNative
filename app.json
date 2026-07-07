@@ -9,11 +9,9 @@
     "splash": {
       "image": "./src/assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#6C63FF"
+      "backgroundColor": "#FFFFFF"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.seuapp.meuapp"
@@ -21,7 +19,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/adaptive-icon.png",
-        "backgroundColor": "#6C63FF"
+        "backgroundColor": "#FFFFFF"
       },
       "package": "com.seuapp.meuapp"
     },
@@ -31,14 +29,8 @@
     "experiments": {
       "tsconfigPaths": true
     },
-    "plugins": [
-      "expo-router"
-    ],
-    "platforms": [
-      "ios",
-      "android",
-      "web"
-    ],
+    "plugins": ["expo-router"],
+    "platforms": ["ios", "android", "web"],
     "extra": {
       "router": {},
       "eas": {

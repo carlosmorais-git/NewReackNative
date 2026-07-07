@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,55 +6,96 @@ import {
   TouchableOpacity,
   ScrollView,
   Linking,
+  ActivityIndicator,
+  RefreshControl,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useTheme } from "../context/ThemeContext";
-import { SPACING, TYPOGRAPHY, RADIUS, SHADOWS } from "../styles/globalStyles";
+import { useTheme } from "../../context/ThemeContext";
+import {
+  SPACING,
+  TYPOGRAPHY,
+  RADIUS,
+  SHADOWS,
+} from "../../styles/globalStyles";
+import { ContactItem, SocialNetwork } from "../../types/common";
+import { getContacts } from "../../services/contactsService";
 
-const ContatoScreen = () => {
+const ContatoScreen: React.FC = () => {
   const { colors } = useTheme();
+  const [contacts, setContacts] = useState<ContactItem[]>([]);
+  const [socials, setSocials] = useState<SocialNetwork[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
 
-  const contacts = [
-    {
-      id: 1,
-      icon: "email",
-      title: "Email",
-      value: "contato@exemplo.com",
-      action: () => Linking.openURL("mailto:contato@exemplo.com"),
-    },
-    {
-      id: 2,
-      icon: "phone",
-      title: "Telefone",
-      value: "+55 (11) 99999-9999",
-      action: () => Linking.openURL("tel:+5511999999999"),
-    },
-    {
-      id: 3,
-      icon: "whatsapp",
-      title: "WhatsApp",
-      value: "+55 (11) 99999-9999",
-      action: () => Linking.openURL("https://wa.me/5511999999999"),
-    },
-    {
-      id: 4,
-      icon: "web",
-      title: "Website",
-      value: "www.exemplo.com",
-      action: () => Linking.openURL("https://www.exemplo.com"),
-    },
-  ];
+  const loadContacts = async () => {
+    try {
+      setLoading(true);
+      const data = await getContacts();
+      setContacts(data.contacts);
+      setSocials(data.socials);
+    } catch (error) {
+      console.error("Erro ao carregar contatos:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await loadContacts();
+    setRefreshing(false);
+  };
+
+  useEffect(() => {
+    loadContacts();
+  }, []);
+
+  const handleContactPress = (contact: ContactItem) => {
+    if (contact.action) {
+      Linking.openURL(contact.action);
+    }
+  };
+
+  const handleSocialPress = (social: SocialNetwork) => {
+    if (social.url) {
+      Linking.openURL(social.url);
+    }
+  };
+
+  if (loading) {
+    return (
+      <View
+        style={[
+          styles.loadingContainer,
+          { backgroundColor: colors.background },
+        ]}
+      >
+        <ActivityIndicator size="large" color={colors.primary} />
+        <Text style={[styles.loadingText, { color: colors.textSecondary }]}>
+          Carregando...
+        </Text>
+      </View>
+    );
+  }
 
   return (
     <ScrollView
       style={[styles.container, { backgroundColor: colors.background }]}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          colors={[colors.primary]}
+          tintColor={colors.primary}
+        />
+      }
     >
       <View style={styles.contactList}>
         {contacts.map((contact) => (
           <TouchableOpacity
             key={contact.id}
             style={[styles.contactCard, { backgroundColor: colors.surface }]}
-            onPress={contact.action}
+            onPress={() => handleContactPress(contact)}
           >
             <View
               style={[
@@ -63,7 +104,7 @@ const ContatoScreen = () => {
               ]}
             >
               <MaterialCommunityIcons
-                name={contact.icon}
+                name={contact.icon as any}
                 size={28}
                 color={colors.primary}
               />
@@ -94,16 +135,17 @@ const ContatoScreen = () => {
           Redes Sociais
         </Text>
         <View style={styles.socialButtons}>
-          {["instagram", "facebook", "twitter", "linkedin"].map((social) => (
+          {socials.map((social) => (
             <TouchableOpacity
-              key={social}
+              key={social.id}
               style={[
                 styles.socialButton,
                 { backgroundColor: colors.primary + "15" },
               ]}
+              onPress={() => handleSocialPress(social)}
             >
               <MaterialCommunityIcons
-                name={social}
+                name={social.icon as any}
                 size={28}
                 color={colors.primary}
               />
@@ -118,6 +160,15 @@ const ContatoScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  loadingText: {
+    marginTop: SPACING.medium,
+    ...TYPOGRAPHY.body,
   },
   contactList: {
     paddingTop: SPACING.xlarge,
