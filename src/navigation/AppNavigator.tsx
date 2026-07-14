@@ -8,7 +8,8 @@ import {
   ConfigStack,
   WelcomeScreen,
   LoginScreen,
-  TesteQRScreen,
+  TesteQRStack,
+  QRScannerScreen,
 } from "../navigation";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useTheme } from "../context/ThemeContext";
@@ -108,9 +109,14 @@ const RootNavigator: React.FC = () => {
               options={{ headerShown: false }}
             />
             <Stack.Screen
-              name="TesteQR"
-              component={TesteQRScreen}
+              name="TesteQRStack"
+              component={TesteQRStack}
               options={{ headerShown: true, title: "Teste QR Code" }}
+            />
+            <Stack.Screen
+              name="QRScanner"
+              component={QRScannerScreen}
+              options={{ headerShown: false }}
             />
           </>
         ) : (
@@ -124,11 +130,6 @@ const RootNavigator: React.FC = () => {
               name="Login"
               component={LoginScreen}
               options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="TesteQR"
-              component={TesteQRScreen}
-              options={{ headerShown: true, title: "Teste QR Code" }}
             />
           </>
         )}

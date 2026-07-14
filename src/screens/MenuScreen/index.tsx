@@ -17,8 +17,9 @@ import {
   SHADOWS,
 } from "../../styles/globalStyles";
 import { MenuSection } from "../../types/common";
+import { MainTabsScreenProps } from "../../types";
 
-const MenuScreen: React.FC = () => {
+const MenuScreen: React.FC<MainTabsScreenProps<"Menu">> = ({ navigation }) => {
   const { colors, isDark, toggleTheme } = useTheme();
   const { user, signOut } = useAuth();
 
@@ -93,6 +94,31 @@ const MenuScreen: React.FC = () => {
           title: "Sobre",
           subtitle: "Versão 1.0.0",
           hasArrow: true,
+        },
+      ],
+    },
+    {
+      title: "Oficina",
+      items: [
+        {
+          icon: "qrcode-scan",
+          title: "Teste",
+          subtitle: "Ler com QR Code",
+          hasArrow: true,
+          onPress: () => {
+            navigation.navigate("TesteQRStack");
+          },
+        },
+        {
+          icon: "qrcode-scan",
+          title: "Teste",
+          subtitle: "Passando valores nos parametros",
+          hasArrow: true,
+          onPress: () => {
+            navigation.navigate("TesteQRStack", {
+              id_teste: Math.random().toString(36).substring(7),
+            });
+          },
         },
       ],
     },

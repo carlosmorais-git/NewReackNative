@@ -1,15 +1,7 @@
 // API Types
 
-// Feature (Home Screen)
-export interface Feature {
-  id: number;
-  icon: string;
-  title: string;
-  description: string;
-  descricao?: string; // Compatibilidade com banco de dados
-  color: string;
-  active: boolean;
-}
+// SocialNetwork e Feature vivem em ./common (fonte única de verdade).
+import type { SocialNetwork } from "./common";
 
 // Contact (Contato Screen)
 export interface Contact {
@@ -20,14 +12,6 @@ export interface Contact {
   value: string;
   action: string;
   available: boolean;
-}
-
-export interface SocialNetwork {
-  id: number;
-  name: string;
-  icon: string;
-  url: string;
-  followers: string;
 }
 
 export interface ContactsResponse {

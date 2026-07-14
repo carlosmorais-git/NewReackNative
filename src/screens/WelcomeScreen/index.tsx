@@ -88,21 +88,6 @@ const WelcomeScreen: React.FC<RootStackScreenProps<"Welcome">> = ({
           </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={[styles.secondaryButton, { borderColor: colors.border, backgroundColor: colors.surface }]}
-          onPress={() => navigation.navigate("TesteQR")}
-          activeOpacity={0.85}
-        >
-          <MaterialCommunityIcons
-            name="qrcode-scan"
-            size={20}
-            color={colors.text}
-          />
-          <Text style={[styles.secondaryButtonText, { color: colors.text }]}>
-            Testar Scanner QR
-          </Text>
-        </TouchableOpacity>
-
         <Text style={[styles.terms, { color: colors.textMuted }]}>
           Ao continuar, você aceita os Termos de Uso{"\n"}e a Política de
           Privacidade.
