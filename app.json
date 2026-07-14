@@ -2,6 +2,7 @@
   "expo": {
     "name": "Meu App Base",
     "slug": "meu-app-base",
+    "scheme": "base",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
@@ -17,6 +18,19 @@
       "bundleIdentifier": "com.seuapp.meuapp"
     },
     "android": {
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "base.com"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ],
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
@@ -29,7 +43,15 @@
     "experiments": {
       "tsconfigPaths": true
     },
-    "plugins": ["expo-router"],
+    "plugins": [
+      "expo-router",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Permitir que o app acesse a câmera para escanear QR Codes."
+        }
+      ]
+    ],
     "platforms": ["ios", "android", "web"],
     "extra": {
       "router": {},

@@ -1,15 +1,20 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { View, Text, ActivityIndicator } from "react-native";
+import { View, Text, ActivityIndicator, TouchableOpacity } from "react-native";
 import MainTabs from "./MainTabs";
 import appJson from "../../app.json";
-import { ConfigStack, WelcomeScreen, LoginScreen } from "../navigation";
+import {
+  ConfigStack,
+  WelcomeScreen,
+  LoginScreen,
+  TesteQRScreen,
+} from "../navigation";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useTheme } from "../context/ThemeContext";
 import { useAuth } from "../context/AuthContext";
 import { RootStackParamList } from "../types/navigation";
-
+import { linking } from "./linking";
 const Stack = createStackNavigator<RootStackParamList>();
 
 const RootNavigator: React.FC = () => {
@@ -51,7 +56,7 @@ const RootNavigator: React.FC = () => {
   }
 
   return (
-    <NavigationContainer>
+    <NavigationContainer linking={linking}>
       <Stack.Navigator
         screenOptions={screenOptions}
         initialRouteName={user ? "Base" : "Welcome"}
@@ -89,7 +94,10 @@ const RootNavigator: React.FC = () => {
                     name="rocket-launch-outline"
                     size={28}
                     color={colors.primary}
-                    style={{ marginLeft: 16, transform: [{ rotate: "-20deg" }] }}
+                    style={{
+                      marginLeft: 16,
+                      transform: [{ rotate: "-20deg" }],
+                    }}
                   />
                 ),
               })}
@@ -97,7 +105,12 @@ const RootNavigator: React.FC = () => {
             <Stack.Screen
               name="ConfigStack"
               component={ConfigStack}
-              options={{ title: "Configurações" }}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="TesteQR"
+              component={TesteQRScreen}
+              options={{ headerShown: true, title: "Teste QR Code" }}
             />
           </>
         ) : (
@@ -111,6 +124,11 @@ const RootNavigator: React.FC = () => {
               name="Login"
               component={LoginScreen}
               options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="TesteQR"
+              component={TesteQRScreen}
+              options={{ headerShown: true, title: "Teste QR Code" }}
             />
           </>
         )}

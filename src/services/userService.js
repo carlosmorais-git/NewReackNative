@@ -10,6 +10,7 @@ export const login = async (email, senha) => {
   const { token, usuario } = response.data;
 
   await SecureStore.setItemAsync(TOKEN_KEY, token);
+
   if (usuario?.tipo_usuario) {
     await SecureStore.setItemAsync(TIPO_USUARIO_KEY, usuario.tipo_usuario);
   }

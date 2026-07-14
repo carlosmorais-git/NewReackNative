@@ -8,6 +8,7 @@ export type RootStackParamList = {
   Login: undefined;
   Base: undefined;
   ConfigStack: undefined;
+  TesteQR: undefined;
 };
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> =

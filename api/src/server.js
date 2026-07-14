@@ -23,7 +23,7 @@ const searchRouter = require("./routes/search");
 const app = express();
 const db = require("./db");
 
-/**
+/** 
  * Habilitando o CORS para permitir requisições de diferentes origens,
  * e o middleware para interpretar requisições com corpo em formato JSON
  */
