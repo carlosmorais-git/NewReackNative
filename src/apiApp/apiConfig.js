@@ -1,4 +1,5 @@
-// Configuração da URL do backend
-// IP da máquina na rede local (mesma rede Wi-Fi do celular/emulador)
+// Configuração da URL do backend.
+// No Expo SDK 54 só variáveis com prefixo EXPO_PUBLIC_ chegam ao código do app.
+// Via cabo USB (adb reverse tcp:3003) o celular alcança o backend por localhost.
 export const API_BASE_URL =
-  process.env.API_BASE_URL || "http://10.0.0.208:3003";
+  process.env.EXPO_PUBLIC_API_BASE_URL || "http://localhost:3003";
